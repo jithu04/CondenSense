@@ -20,11 +20,12 @@
     <style>
         /* ===== CSS Variables ===== */
         :root {
-            --primary: #0a0a0a;
-            --secondary: #1D2E28;
-            --accent: #0A5C36;
-            --accent-light: #0F5132;
-            --accent-gradient: linear-gradient(135deg, #0A5C36 0%, #14452F 50%, #18392B 100%);
+            --primary: #212e29;
+            --secondary: #20382c;
+            --accent: #265235;
+            --accent-light: #285b3a;
+            --accent-dark: #224331;
+            --accent-gradient: linear-gradient(135deg, #224331 0%, #265235 50%, #285b3a 100%);
             --text-primary: #111827;
             --text-secondary: #4b5563;
             --text-muted: #9ca3af;
@@ -166,12 +167,12 @@
             font-weight: 600;
             font-size: 0.875rem;
             transition: all var(--transition-fast);
-            box-shadow: 0 4px 14px rgba(10, 92, 54, 0.3);
+            box-shadow: 0 4px 14px rgba(38, 82, 53, 0.3);
         }
 
         .nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(10, 92, 54, 0.4);
+            box-shadow: 0 6px 20px rgba(38, 82, 53, 0.4);
         }
 
         /* Mobile Menu */
@@ -220,8 +221,8 @@
             position: absolute;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(10, 92, 54, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(10, 92, 54, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(38, 82, 53, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(38, 82, 53, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
             -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
@@ -232,7 +233,7 @@
             width: 600px;
             height: 600px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(10, 92, 54, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(38, 82, 53, 0.15) 0%, transparent 70%);
             filter: blur(60px);
             animation: float 8s ease-in-out infinite;
         }
@@ -246,7 +247,7 @@
             bottom: -200px;
             left: -100px;
             animation-delay: -4s;
-            background: radial-gradient(circle, rgba(20, 69, 47, 0.12) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(40, 91, 58, 0.12) 0%, transparent 70%);
         }
 
         @keyframes float {
@@ -258,7 +259,10 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 8rem 2rem 4rem;
-            display: block;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
             position: relative;
             z-index: 1;
         }
@@ -282,8 +286,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(10, 92, 54, 0.1);
-            border: 1px solid rgba(10, 92, 54, 0.2);
+            background: rgba(38, 82, 53, 0.1);
+            border: 1px solid rgba(38, 82, 53, 0.2);
             padding: 0.5rem 1rem;
             border-radius: 50px;
             font-size: 0.8rem;
@@ -352,12 +356,12 @@
         .btn-primary {
             background: var(--accent-gradient);
             color: white;
-            box-shadow: 0 4px 14px rgba(10, 92, 54, 0.35);
+            box-shadow: 0 4px 14px rgba(38, 82, 53, 0.35);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(10, 92, 54, 0.45);
+            box-shadow: 0 8px 25px rgba(38, 82, 53, 0.45);
         }
 
         .btn-secondary {
@@ -372,6 +376,69 @@
             color: var(--accent);
         }
 
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .hero-video-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.03),
+                0 20px 50px -10px rgba(0, 0, 0, 0.1),
+                0 0 100px rgba(38, 82, 53, 0.1);
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-logo-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .hero-logo-fallback img {
+            width: 60%;
+            height: auto;
+            opacity: 0.9;
+        }
+
+        .hero-orbit {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            border: 1px dashed rgba(38, 82, 53, 0.2);
+            border-radius: 50%;
+            animation: rotate 30s linear infinite;
+        }
+
+        .hero-orbit-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(38, 82, 53, 0.5);
+        }
 
         @keyframes rotate {
             from { transform: rotate(0deg); }
@@ -509,7 +576,7 @@
 
         .diagram-step:hover {
             transform: translateX(8px);
-            background: rgba(10, 92, 54, 0.05);
+            background: rgba(38, 82, 53, 0.05);
         }
 
         .diagram-step-icon {
@@ -575,7 +642,7 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: rgba(10, 92, 54, 0.1);
+            background: rgba(38, 82, 53, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -631,7 +698,7 @@
             width: 64px;
             height: 64px;
             border-radius: 16px;
-            background: linear-gradient(135deg, rgba(10, 92, 54, 0.1) 0%, rgba(20, 69, 47, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(38, 82, 53, 0.1) 0%, rgba(40, 91, 58, 0.1) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -770,7 +837,7 @@
             transform: translateY(-8px);
             background: var(--bg-primary);
             border-color: var(--accent);
-            box-shadow: 0 0 40px rgba(10, 92, 54, 0.1);
+            box-shadow: 0 0 40px rgba(38, 82, 53, 0.1);
         }
 
         .tech-icon {
@@ -907,7 +974,7 @@
         .team-orbit {
             position: absolute;
             inset: -30px;
-            border: 1px dashed rgba(10, 92, 54, 0.2);
+            border: 1px dashed rgba(38, 82, 53, 0.2);
             border-radius: 50%;
             animation: rotate 40s linear infinite;
         }
@@ -918,7 +985,7 @@
             height: 16px;
             background: var(--accent);
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(10, 92, 54, 0.5);
+            box-shadow: 0 0 20px rgba(38, 82, 53, 0.5);
         }
 
         .team-orbit-dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
@@ -1137,6 +1204,11 @@
                 order: 1;
             }
 
+            .hero-visual {
+                order: 0;
+                margin-bottom: 2rem;
+            }
+
             .hero-summary {
                 margin-left: auto;
                 margin-right: auto;
@@ -1144,6 +1216,10 @@
 
             .hero-actions {
                 justify-content: center;
+            }
+
+            .hero-video-container {
+                max-width: 350px;
             }
 
             .stats-container {
@@ -1319,6 +1395,10 @@
         }
 
         @media (max-width: 480px) {
+            .hero-video-container {
+                max-width: 280px;
+            }
+
             .btn {
                 padding: 0.875rem 1.5rem;
                 font-size: 0.9rem;
@@ -1397,7 +1477,16 @@
                     </a>
                 </div>
             </div>
-
+            <div class="hero-visual">
+                <div class="hero-orbit">
+                    <div class="hero-orbit-dot"></div>
+                </div>
+                <div class="hero-video-container">
+                    <div class="hero-logo-fallback">
+                        <img src="logo.png" alt="CondenSense Logo">
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1687,7 +1776,7 @@
                         </div>
                         <div class="team-badge-text">
                             <span>Competing in</span>
-                            <strong>iGEM 2026 Therapeutics Track</strong>
+                            <strong>iGEM 2026</strong>
                         </div>
                     </div>
                     <p>
@@ -1755,7 +1844,6 @@
                     <h4>Competition</h4>
                     <ul>
                         <li><a href="#">iGEM 2026</a></li>
-                        <li><a href="#">Therapeutics Track</a></li>
                         <li><a href="#">University of Edinburgh</a></li>
                     </ul>
                 </div>
@@ -1841,7 +1929,16 @@
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll(); // Run on load
 
+        // Video fallback
+        const heroVideo = document.getElementById('heroVideo');
+        const logoFallback = document.getElementById('logoFallback');
 
+        heroVideo.addEventListener('error', () => {
+            heroVideo.style.display = 'none';
+            logoFallback.style.display = 'flex';
+        });
+
+        // Counter animation for stats
         const animateCounter = (element, target, duration = 2000) => {
             let start = 0;
             const increment = target / (duration / 16);
