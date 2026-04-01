@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CondenSense | LLPS-Based Fluorescent Biosensor</title>
+    <meta name="description" content="CondenSense: An LLPS-Based Fluorescent Biosensor for Early-Stage Pharmaceutical Toxicity Detection by University of Edinburgh students.">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CondenSense | Early-Stage Pharmaceutical Toxicity Detection">
+    <meta property="og:description" content="An LLPS-Based Fluorescent Biosensor for detecting sub-lethal drug toxicity earlier than ever before.">
+    <meta property="og:image" content="logo.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #1D2E28;
+            --accent: #0A5C36;
+            --accent-light: #0F5132;
+            --accent-gradient: linear-gradient(135deg, #0A5C36 0%, #14452F 50%, #18392B 100%);
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== Custom Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-light);
+        }
+
+        /* ===== Navigation ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all var(--transition-smooth);
+            background: transparent;
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .nav-logo img {
+            height: 36px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all var(--transition-fast);
+            box-shadow: 0 4px 14px rgba(10, 92, 54, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(10, 92, 54, 0.4);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(10, 92, 54, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 92, 54, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(10, 92, 54, 0.15) 0%, transparent 70%);
+            filter: blur(60px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-glow-1 {
+            top: -200px;
+            right: -100px;
+        }
+
+        .hero-glow-2 {
+            bottom: -200px;
+            left: -100px;
+            animation-delay: -4s;
+            background: radial-gradient(circle, rgba(20, 69, 47, 0.12) 0%, transparent 70%);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(10, 92, 54, 0.1);
+            border: 1px solid rgba(10, 92, 54, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero-title-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-summary {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            max-width: 540px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(10, 92, 54, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 92, 54, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .hero-video-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.03),
+                0 20px 50px -10px rgba(0, 0, 0, 0.1),
+                0 0 100px rgba(10, 92, 54, 0.1);
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-logo-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .hero-logo-fallback img {
+            width: 60%;
+            height: auto;
+            opacity: 0.9;
+        }
+
+        .hero-orbit {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            border: 1px dashed rgba(10, 92, 54, 0.2);
+            border-radius: 50%;
+            animation: rotate 30s linear infinite;
+        }
+
+        .hero-orbit-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(10, 92, 54, 0.5);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== Stats Section ===== */
+        .stats {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: var(--bg-secondary);
+            transition: all var(--transition-fast);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== Section Common Styles ===== */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-alt {
+            background: var(--bg-secondary);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== Purpose Section ===== */
+        .purpose-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .purpose-visual {
+            position: relative;
+        }
+
+        .purpose-diagram {
+            background: var(--bg-primary);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .diagram-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .diagram-step {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .diagram-step:hover {
+            transform: translateX(8px);
+            background: rgba(10, 92, 54, 0.05);
+        }
+
+        .diagram-step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .diagram-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .diagram-step-content p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .diagram-arrow {
+            display: flex;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .purpose-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .purpose-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .purpose-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(10, 92, 54, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Need Section ===== */
+        .need-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .need-card {
+            background: var(--bg-primary);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .need-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform var(--transition-smooth);
+        }
+
+        .need-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .need-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .need-card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(10, 92, 54, 0.1) 0%, rgba(20, 69, 47, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .need-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .need-card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== Problem Section ===== */
+        .problem-section {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .problem-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .comparison-card {
+            padding: 3rem;
+            border-radius: 24px;
+            position: relative;
+        }
+
+        .comparison-card.old {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+        }
+
+        .comparison-card.new {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+        }
+
+        .comparison-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-card.old .comparison-label {
+            background: #ef4444;
+            color: white;
+        }
+
+        .comparison-card.new .comparison-label {
+            background: #22c55e;
+            color: white;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .comparison-card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list .icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .comparison-card.old .comparison-list .icon {
+            color: #ef4444;
+        }
+
+        .comparison-card.new .comparison-list .icon {
+            color: #22c55e;
+        }
+
+        /* ===== Technology Section ===== */
+        .tech-section {
+            background: var(--bg-primary);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .tech-card {
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(10, 92, 54, 0.1);
+        }
+
+        .tech-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .tech-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .tech-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== Team Section ===== */
+        .team-section {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .team-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .team-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .team-info p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-badge-text {
+            text-align: left;
+        }
+
+        .team-badge-text span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .team-badge-text strong {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .team-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .team-circle {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.03),
+                0 20px 50px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 8rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .team-circle::after {
+            content: 'Students';
+            position: absolute;
+            bottom: 25%;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .team-orbit {
+            position: absolute;
+            inset: -30px;
+            border: 1px dashed rgba(10, 92, 54, 0.2);
+            border-radius: 50%;
+            animation: rotate 40s linear infinite;
+        }
+
+        .team-orbit-dot {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(10, 92, 54, 0.5);
+        }
+
+        .team-orbit-dot:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .team-orbit-dot:nth-child(2) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .team-orbit-dot:nth-child(3) { top: 50%; left: 0; transform: translateY(-50%); }
+        .team-orbit-dot:nth-child(4) { top: 50%; right: 0; transform: translateY(-50%); }
+
+        /* ===== CTA Section ===== */
+        .cta-section {
+            padding: 8rem 2rem;
+            background: var(--accent-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .btn-white:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all var(--transition-fast);
+        }
+
+        .footer-social a:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .footer-links h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-bottom-links a {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        /* ===== Scroll Animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 6rem;
+            }
+
+            .hero-content {
+                order: 1;
+            }
+
+            .hero-visual {
+                order: 0;
+                margin-bottom: 2rem;
+            }
+
+            .hero-summary {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-video-container {
+                max-width: 350px;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .purpose-content {
+                grid-template-columns: 1fr;
+            }
+
+            .purpose-visual {
+                order: 1;
+            }
+
+            .need-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .team-visual {
+                order: 0;
+                margin-bottom: 2rem;
+            }
+
+            .team-circle {
+                width: 300px;
+                height: 300px;
+            }
+
+            .team-number {
+                font-size: 6rem;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 15px;
+            }
+
+            .nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--bg-primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%);
+                transition: transform var(--transition-smooth);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .nav-cta {
+                padding: 1rem 2rem;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .section {
+                padding: 5rem 1.5rem;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 5rem;
+            }
+
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .hero-summary {
+                font-size: 1.1rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .need-card {
+                padding: 2rem;
+            }
+
+            .comparison-card {
+                padding: 2rem;
+            }
+
+            .tech-card {
+                padding: 2rem;
+            }
+
+            .team-circle {
+                width: 250px;
+                height: 250px;
+            }
+
+            .team-number {
+                font-size: 5rem;
+            }
+
+            .cta-section {
+                padding: 5rem 1.5rem;
+            }
+
+            .cta-title {
+                font-size: 1.75rem;
+            }
+
+            .cta-subtitle {
+                font-size: 1rem;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-video-container {
+                max-width: 280px;
+            }
+
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="logo.png" alt="CondenSense Logo">
+                <span>CondenSense</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#purpose">Purpose</a></li>
+                <li><a href="#need">The Need</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="https://www.instagram.com/condense.sense/" target="_blank" class="nav-cta">Follow Us</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    iGEM 2026 Project
+                </div>
+                <h1 class="hero-title">
+                    Detect Drug Toxicity<br>
+                    <span class="hero-title-gradient">Before It's Too Late</span>
+                </h1>
+                <p class="hero-summary">
+                    An LLPS-Based Fluorescent Biosensor for Early-Stage Pharmaceutical Toxicity Detection — catching cellular stress signals that current methods miss.
+                </p>
+                <div class="hero-actions">
+                    <a href="#purpose" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                        Learn More
+                    </a>
+                    <a href="https://www.instagram.com/condense.sense/" target="_blank" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        Follow Our Journey
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-orbit">
+                    <div class="hero-orbit-dot"></div>
+                </div>
+                <div class="hero-video-container">
+                    <video class="hero-video" autoplay muted loop playsinline id="heroVideo">
+                        <source src="logo-animation.mp4" type="video/mp4">
+                    </video>
+                    <div class="hero-logo-fallback" id="logoFallback" style="display: none;">
+                        <img src="logo.png" alt="CondenSense Logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item reveal">
+                <div class="stat-number">30%</div>
+                <div class="stat-label">Drug failures from toxicity in late-stage trials</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-1">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Students from University of Edinburgh</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Biological chassis tested</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Weeks of experimental protocol</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purpose Section -->
+    <section class="section" id="purpose">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-label">Our Purpose</span>
+                <h2 class="section-title">Revolutionizing Drug Safety Detection</h2>
+                <p class="section-subtitle">
+                    We're building a modular biosensor that detects cellular stress before it becomes irreversible damage.
+                </p>
+            </div>
+            <div class="purpose-content">
+                <div class="purpose-visual reveal">
+                    <div class="purpose-diagram">
+                        <div class="diagram-flow">
+                            <div class="diagram-step">
+                                <div class="diagram-step-icon">1</div>
+                                <div class="diagram-step-content">
+                                    <h4>Stress Detection</h4>
+                                    <p>Cellular stress triggers promoter activation</p>
+                                </div>
+                            </div>
+                            <div class="diagram-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                            </div>
+                            <div class="diagram-step">
+                                <div class="diagram-step-icon">2</div>
+                                <div class="diagram-step-content">
+                                    <h4>Phase Separation</h4>
+                                    <p>IDR-fluorophore proteins condense into puncta</p>
+                                </div>
+                            </div>
+                            <div class="diagram-arrow">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                            </div>
+                            <div class="diagram-step">
+                                <div class="diagram-step-icon">3</div>
+                                <div class="diagram-step-content">
+                                    <h4>Fluorescent Signal</h4>
+                                    <p>Visible, quantifiable readout in real-time</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="purpose-text reveal">
+                    <h3>From Concept to Clinical Impact</h3>
+                    <p>
+                        Current pharmaceutical toxicity screening relies on metabolic viability assays like MTT and resazurin. While these provide quantitative measures, they report on downstream consequences of stress — metabolic impairment and membrane integrity loss — instead of upstream stress-signalling events.
+                    </p>
+                    <p>
+                        CondenSense addresses this gap using liquid-liquid phase separation (LLPS) as a sensitive, early reporter of cellular stress. When cells experience oxidative damage, DNA stress, or proteotoxic insult, specific intrinsically disordered proteins rapidly condense into fluorescent puncta — providing a fast, visually unmistakable signal.
+                    </p>
+                    <div class="purpose-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span class="feature-text">Detects sub-lethal toxicity before metabolic changes</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span class="feature-text">Modular architecture for different stress pathways</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <span class="feature-text">Real-time fluorescent readout without fixation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Need Section -->
+    <section class="section section-alt" id="need">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-label">Why It Matters</span>
+                <h2 class="section-title">The Unmet Need in Drug Safety</h2>
+                <p class="section-subtitle">
+                    Current toxicity assays miss critical early warning signs, leading to costly late-stage drug failures.
+                </p>
+            </div>
+            <div class="need-grid">
+                <div class="need-card reveal">
+                    <div class="need-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <h3>The Detection Gap</h3>
+                    <p>
+                        Cells under significant biological stress, mounting active stress responses, and accumulating molecular damage may still return near-normal metabolic readouts. This creates a dangerous blind spot in early drug development where sub-lethal toxicity goes undetected.
+                    </p>
+                </div>
+                <div class="need-card reveal reveal-delay-1">
+                    <div class="need-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h3>Clinical Consequences</h3>
+                    <p>
+                        Drugs that pass standard toxicity screens can still fail in Phase II/III trials due to unexpected organ toxicity. The FDA estimates that toxicity accounts for approximately 30% of late-stage drug failures, predominantly hepatotoxicity and cardiotoxicity.
+                    </p>
+                </div>
+                <div class="need-card reveal reveal-delay-2">
+                    <div class="need-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3>Economic Impact</h3>
+                    <p>
+                        Late-stage drug failures cost pharmaceutical companies billions. Detecting toxicity earlier in the development pipeline could save enormous resources and, more importantly, prevent harmful drugs from reaching clinical trials or the market.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section problem-section">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-label">The Problem</span>
+                <h2 class="section-title">A New Approach to an Old Problem</h2>
+                <p class="section-subtitle">
+                    Moving from death-based to stress-based toxicity sensing represents a conceptual advance in drug safety science.
+                </p>
+            </div>
+            <div class="problem-comparison">
+                <div class="comparison-card old reveal">
+                    <span class="comparison-label">Current Methods</span>
+                    <h3>Downstream Detection</h3>
+                    <p>
+                        Traditional assays like MTT, resazurin, and LDH measure consequences of damage that has already occurred.
+                    </p>
+                    <ul class="comparison-list">
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Reports metabolic impairment after damage
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Misses early stress-signalling phase
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            LDH and Annexin V are even further downstream
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Insensitive to sub-lethal stress
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-card new reveal reveal-delay-1">
+                    <span class="comparison-label">CondenSense</span>
+                    <h3>Upstream Detection</h3>
+                    <p>
+                        Our biosensor detects the earliest cellular stress responses, before irreversible damage occurs.
+                    </p>
+                    <ul class="comparison-list">
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Detects stress granule formation in minutes
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Reports on upstream stress-signalling events
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Graded and reversible response
+                        </li>
+                        <li>
+                            <span class="icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Catches sub-lethal toxicity early
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="section tech-section" id="technology">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-label">Our Technology</span>
+                <h2 class="section-title">Modular Cassette Architecture</h2>
+                <p class="section-subtitle">
+                    Three independently swappable modules enable customization for different stress pathways while maintaining the same detection platform.
+                </p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </div>
+                    <h3>Stress Promoter Cassette</h3>
+                    <p>
+                        Transcriptional sensors that respond to defined cellular stress axes. Examples include SoxS (oxidative), recA (DNA damage), and in mammalian cells, NRF2/ARE and HSP70 pathways.
+                    </p>
+                </div>
+                <div class="tech-card reveal reveal-delay-1">
+                    <div class="tech-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6"/><path d="M12 17v6"/><path d="M4.22 4.22l4.24 4.24"/><path d="M15.54 15.54l4.24 4.24"/><path d="M1 12h6"/><path d="M17 12h6"/><path d="M4.22 19.78l4.24-4.24"/><path d="M15.54 8.46l4.24-4.24"/></svg>
+                    </div>
+                    <h3>IDR-Fluorophore Fusion</h3>
+                    <p>
+                        Intrinsically disordered regions (FUS 1-163 or G3BP1) fused to sfGFP or mScarlet-I enable real-time fluorescence microscopy without fixation.
+                    </p>
+                </div>
+                <div class="tech-card reveal reveal-delay-2">
+                    <div class="tech-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    </div>
+                    <h3>Scaffold & Terminator</h3>
+                    <p>
+                        Optimized expression control elements including RBS, Kozak sequences, and poly-A signals. BioBrick RFC10-compatible for registry submission.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section team-section" id="team">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-label">Our Team</span>
+                <h2 class="section-title">Thirteen Minds, One Mission</h2>
+                <p class="section-subtitle">
+                    A dedicated team of students from the University of Edinburgh working to transform drug safety science.
+                </p>
+            </div>
+            <div class="team-content">
+                <div class="team-info reveal">
+                    <h3>University of Edinburgh iGEM Team 2026</h3>
+                    <p>
+                        We are a group of 13 students from the University of Edinburgh, united by our passion for synthetic biology and its potential to solve real-world problems. Our diverse backgrounds in biology, biochemistry, and engineering bring complementary perspectives to the CondenSense project.
+                    </p>
+                    <div class="team-badge">
+                        <div class="team-badge-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        </div>
+                        <div class="team-badge-text">
+                            <span>Competing in</span>
+                            <strong>iGEM 2026 Therapeutics Track</strong>
+                        </div>
+                    </div>
+                    <p>
+                        Our project aligns with iGEM's core philosophy of standardized, reusable biological parts. Each module will be submitted to the iGEM Registry, enabling future teams to build upon our work without reproducing the full system.
+                    </p>
+                </div>
+                <div class="team-visual reveal">
+                    <div class="team-circle">
+                        <div class="team-orbit">
+                            <div class="team-orbit-dot"></div>
+                            <div class="team-orbit-dot"></div>
+                            <div class="team-orbit-dot"></div>
+                            <div class="team-orbit-dot"></div>
+                        </div>
+                        <span class="team-number">13</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-bg-pattern"></div>
+        <div class="cta-container">
+            <h2 class="cta-title reveal">Follow Our Journey</h2>
+            <p class="cta-subtitle reveal reveal-delay-1">
+                Stay updated on our progress as we develop CondenSense and prepare for iGEM 2026. Follow us on Instagram for behind-the-scenes content and project updates.
+            </p>
+            <div class="cta-buttons reveal reveal-delay-2">
+                <a href="https://www.instagram.com/condense.sense/" target="_blank" class="btn btn-white">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    Follow on Instagram
+                </a>
+                <a href="#purpose" class="btn btn-outline">
+                    Learn More About Our Work
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <h3>CondenSense</h3>
+                    <p>An LLPS-Based Fluorescent Biosensor for Early-Stage Pharmaceutical Toxicity Detection. iGEM 2026 project by University of Edinburgh students.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/condense.sense/" target="_blank" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Project</h4>
+                    <ul>
+                        <li><a href="#purpose">Purpose</a></li>
+                        <li><a href="#need">The Need</a></li>
+                        <li><a href="#technology">Technology</a></li>
+                        <li><a href="#team">Team</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Competition</h4>
+                    <ul>
+                        <li><a href="#">iGEM 2026</a></li>
+                        <li><a href="#">Therapeutics Track</a></li>
+                        <li><a href="#">University of Edinburgh</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://www.instagram.com/condense.sense/" target="_blank">Instagram</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2026 CondenSense Team. University of Edinburgh.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Navigation scroll effect
+        const nav = document.getElementById('nav');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Run on load
+
+        // Video fallback
+        const heroVideo = document.getElementById('heroVideo');
+        const logoFallback = document.getElementById('logoFallback');
+
+        heroVideo.addEventListener('error', () => {
+            heroVideo.style.display = 'none';
+            logoFallback.style.display = 'flex';
+        });
+
+        // Counter animation for stats
+        const animateCounter = (element, target, duration = 2000) => {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const updateCounter = () => {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            };
+            
+            updateCounter();
+        };
+
+        // Observe stats for animation
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const target = parseInt(stat.textContent);
+                        if (!isNaN(target) && target < 100) {
+                            animateCounter(stat, target);
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
+</body>
+</html>
